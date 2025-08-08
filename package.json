@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "adm-zip": "^0.5.16",
+    "cli-progress": "^3.12.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "puppeteer": "^24.15.0",

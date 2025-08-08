@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import Server from "./lib/server.js";
 import path from "node:path";
 
+// Starting the program
 startScraper(dirname('data.tar.bz2'), dirname('.'));
 
 /**
@@ -14,18 +15,21 @@ startScraper(dirname('data.tar.bz2'), dirname('.'));
  */
 async function startScraper(tarFile, rootDir) {
     const extractedDir = await prepareDataDirectory(tarFile, rootDir,  { 
+        newDirName: dirname(`${Date.now()}`),
         removeCompressedFile: false,
         defaultDir: 'data' 
     });
+
     const dataDir = createFilteredFolder({
         neededFiles: [ 'composed.json', 'repaired.json' ], 
-        targetDir: dirname('filtered_data_folder'), 
+        targetDir: dirname('data'), 
         sourceDir: extractedDir, 
         removeFilteredDir: true
     });
+    
     const server = new Server({ port: 9090 });
-    server.start();
     await enrichRecords(dataDir, scrapeMatchStats, { server });
+    server.start();
 }
 
 /** @param {string} filepath */
@@ -40,6 +44,7 @@ function dirname(filepath) {
  * @param {string} dir
  * @param {{
  *  removeCompressedFile: boolean,
+ *  newDirName: string,
  *  defaultDir: string
  * }} [options={}] 
  * @returns 
@@ -65,5 +70,10 @@ async function prepareDataDirectory(tarFile, dir, options = {}) {
         return dir
     }
 
-    return decompressTarBz2File(tarFile, dir, !!options.removeCompressedFile)
+    const dataDir = decompressTarBz2File(tarFile, dir, {
+        removeTarFile: !!options.removeCompressedFile, 
+        renameTo: options.newDirName
+    });
+
+    return dataDir
 }

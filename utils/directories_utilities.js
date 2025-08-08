@@ -43,7 +43,13 @@ export const createFilteredFolder = (options) => {
         }
 
         walkDir(sourceDir); // Start walking from sourceDir
-        removeFilteredDir && fs.unlinkSync(sourceDir);
+        (async () => {
+            if (removeFilteredDir) {
+                const { rm } = await import('node:fs/promises');
+                await rm(sourceDir, { recursive: true, force: true });
+            }
+        })();
+        
         return targetDir;
 
         // Walk through source directory recursively
