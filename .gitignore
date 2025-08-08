@@ -1,0 +1,63 @@
+
+# Ignore all node_modules folders anywhere (Node.js)
+**/node_modules/
+
+
+# Data directory
+data/
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+**/.env
+**/.env.*
+**/!.env.example
+**/!.env.test
+
+
+# Build artifacts
+build/
+dist/
+**/.output
+**/.vercel
+**/.netlify
+**/.wrangler
+**/.svelte-kit
+**/build
+**/dist
+
+
+# Test coverage
+coverage/
+.nyc_output/
+tester.js
+testDir/
+**/coverage/
+**/.nyc_output/
+
+# OS and Editor specific
+.DS_Store
+.vscode/
+.idea/
+**/.DS_Store
+**/Thumbs.db
+
+
+# npm cache
+.npm
+**/.npm
+
+# ESLint cache
+.eslintcache
+**/.eslintcache
+
+# REPL history
+.node_repl_history
+**/.node_repl_history
+
+# Vite
+**/vite.config.js.timestamp-*
+**/vite.config.ts.timestamp-*
