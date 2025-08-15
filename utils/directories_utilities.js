@@ -28,6 +28,7 @@ export const isEmptyDirectory = (dirPath) => {
  *  neededFiles: Array<string>, 
  *  removeFilteredDir?: boolean
  * }} options
+ * @returns {Promise<string>}
  */
 export const createFilteredFolder = (options) => {
     const { sourceDir, targetDir, neededFiles } = options;
@@ -43,14 +44,21 @@ export const createFilteredFolder = (options) => {
         }
 
         walkDir(sourceDir); // Start walking from sourceDir
-        (async () => {
-            if (removeFilteredDir) {
-                const { rm } = await import('node:fs/promises');
-                await rm(sourceDir, { recursive: true, force: true });
-            }
-        })();
         
-        return targetDir;
+        return new Promise((resolve, reject) => {
+            (async () => {
+                try {
+                    if (removeFilteredDir) {
+                        const { rm } = await import('node:fs/promises');
+                        await rm(sourceDir, { recursive: true, force: true });
+                    }
+                    resolve(targetDir);
+                } 
+                catch (error) {
+                    reject(`Failed to remove filtered directory: ${error.message}`)
+                }
+            })();
+        });
 
         // Walk through source directory recursively
         function walkDir(currentDir, relativePath = '') {

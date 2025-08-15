@@ -1,10 +1,20 @@
 
 # Ignore all node_modules folders anywhere (Node.js)
+node_modules/
 **/node_modules/
-
 
 # Data directory
 data/
+
+# Testing directory
+testDir/
+
+# Progression file
+progress.json
+**/progress.json
+
+# Svelte files
+gsa_server/
 
 # Environment variables
 .env
@@ -16,7 +26,6 @@ data/
 **/.env.*
 **/!.env.example
 **/!.env.test
-
 
 # Build artifacts
 build/

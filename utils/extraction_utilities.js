@@ -11,7 +11,7 @@ import path from 'node:path';
  *  removeTarFile: boolean, 
  *  renameTo: string
  * }} [options={}]
- * @returns {string} 
+ * @returns {Promise<string>} 
  */
 export const decompressTarBz2File = (tarFilePath, extractTo, options) => {
     // Check if the tar file exists
@@ -27,16 +27,22 @@ export const decompressTarBz2File = (tarFilePath, extractTo, options) => {
     // Decompress using tar command
     try {
         execSync(`tar -xjf ${tarFilePath} -C ${extractTo}`);
-        console.log(`Decompressed ${tarFilePath} to ${extractTo}`);
+        console.log('Tar file decompressed successfully...\n');
         options.removeTarFile && fs.unlinkSync(tarFilePath);
-        return new Promise((resolve) => {
-            (async () => {
-                if (options.renameTo) {
-                    const { rename } = await import('node:fs/promises');
-                    await rename(path.resolve('data'), options.renameTo);
-                }
-                resolve(options.renameTo || extractTo);
-            })();
+        
+        return new Promise((resolve, reject) => {
+            try {
+                (async () => {
+                    if (options.renameTo) {
+                        const { rename } = await import('node:fs/promises');
+                        await rename(path.resolve('data'), options.renameTo);
+                    }
+                    resolve(options.renameTo || extractTo)
+                })();
+            } 
+            catch (error) {
+                reject(`Error occurred when renaming data directory: ${error.message}`)
+            }
         })
     } 
     catch (err) {
