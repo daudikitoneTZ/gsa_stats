@@ -6,13 +6,8 @@ import { fileURLToPath } from "node:url";
 import Server from "./lib/server.js";
 import path from "node:path";
 
-// Starting the program
+// Start the program
 startScraper(dirname('data.tar.bz2'), dirname('.'));
-
-//const stats = await scrapeMatchStats("2 : 0", 'https://globalsportsarchive.com/match/soccer/2024-08-17/arsenal-fc-vs-wolverhampton-wanderers-fc/3356599/', {
-//    homeTeam: 'Arsenal FC', awayTeam: 'Wolverhampton Wanderers FC'
-//});
-//console.log('Stats:', stats);
 
 /**
  * @param {string} tarFile 
@@ -36,7 +31,7 @@ async function startScraper(tarFile, rootDir) {
         });
     }
         
-    const server = new Server({ port: 9090 });
+    const server = new Server({ port: 6700 });
     server.start();
     await enrichRecords(dataDir, scrapeMatchStats, { server });
 }
