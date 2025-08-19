@@ -18,7 +18,7 @@ async function startScraper(tarFile, rootDir) {
     const { extractedDir, isDefault } = await prepareDataDirectory(tarFile, rootDir,  { 
         newDirName: dirname(`${Date.now()}`),
         removeCompressedFile: false,
-        defaultDir: 'data' 
+        defaultDir: 'data'
     });
 
     if (isDefault) (dataDir = extractedDir);
